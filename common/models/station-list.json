@@ -1,0 +1,37 @@
+{
+  "name": "station_list",
+  "plural": "station_list",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "stationid": {
+      "type": "string",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "position": {
+      "type": [
+        "number"
+      ],
+      "required": true
+    },
+    "province": {
+      "type": "string",
+      "required": true
+    },
+    "timezone": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

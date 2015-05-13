@@ -1,0 +1,33 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ]
+  },
+  "User": {
+    "dataSource": "weather"
+  },
+  "AccessToken": {
+    "dataSource": "weather",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "weather",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "weather",
+    "public": false
+  },
+  "Role": {
+    "dataSource": "weather",
+    "public": false
+  },
+  "station_list": {
+    "dataSource": "weather",
+    "public": true
+  }
+}

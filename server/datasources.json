@@ -1,0 +1,11 @@
+{
+  "weather": {
+    "name": "weather",
+    "connector": "mongodb",
+    "host": "127.0.0.1", 
+    "database": "station", 
+    "username": "", 
+    "password": "", 
+    "port": 27017 
+  }
+}
