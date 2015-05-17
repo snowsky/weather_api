@@ -30,7 +30,7 @@
     "dataSource": "weather",
     "public": true
   },
-  "hourly_data": {
+  "metrics": {
     "dataSource": "weather",
     "public": true
   }
