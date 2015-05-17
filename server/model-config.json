@@ -29,5 +29,9 @@
   "station_list": {
     "dataSource": "weather",
     "public": true
+  },
+  "hourly_data": {
+    "dataSource": "weather",
+    "public": true
   }
 }
