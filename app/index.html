@@ -1,52 +1,107 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset=utf-8 />
-<title>A simple map</title>
-<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
-<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
-<script src="http://code.jquery.com/jquery.js"></script>
+    <meta charset=utf-8 />
+    <title>A simple map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script type='text/javascript' src="js/bootstrap-slider.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <link href="css/slider.css" rel="stylesheet">
 <style>
-  body { margin:0; padding:0; }
-  #map { position:absolute; top:0; bottom:0; width:100%; }
-</style>
-</head>
-<body>
-<style>
+    body { margin:0; padding:0; }
+    #map { position:absolute; top:0; bottom:0; width:100%; height: 90% }
+    div .row .container {
+        position: absolute;
+        bottom: 0px;
+        align-items: center;
+        display: inherit;
+        background-color: none;
+    }
+    #ex1Slider {
+        background: #BABABA;
+    }
     .ui-button {
         background:#3887BE;
         color:#FFF;
         display:block;
-        position:absolute;
-        top:50%;left:50%;
+        position:relative;
+        left:50%;
         width:160px;
-        margin:-20px 0 0 -80px;
+        margin:20px 0 0 80px;
         z-index:100;
         text-align:center;
         padding:10px;
         border:1px solid rgba(0,0,0,0.4);
         border-radius:3px;
+        bottom: 0px;
     }
     .ui-button:hover {
         background:#3074a4;
         color:#fff;
     }
 </style>
-
-<div id='map'></div>
-<a href='#' id='geolocate' class='ui-button'>Find me</a>
+</head>
+<body>
 
 <div>
-    <div>
-        <input type="text" name="address">
+    <div class="row">
+        <div id='map'></div>
+    </div>
+    
+    <div class="row">
+        <div class="container">
+            <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="20"/>
+        </div>
+        <div class="container">
+            <a href='#' id='geolocate' class='ui-button'>Find me</a>
+        </div>
     </div>
 </div>
+
 <script>
+    function toGeoJSON(item) {
+        return {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": item.position
+          },
+          "properties": {
+            "name": item.name
+          }
+        }
+    }
+    
+    function getStations(position, numStation) {
+        $.get("http://129.41.145.159:3000/api/station_list?filter[where][province][like]=ON&filter[where][position][near]="+position.lat+","+position.lng+"&filter[limit]="+numStation, function(data) {
+            data.forEach(function(item) {
+                setInterval(function() {
+                    var marker = L.marker(new L.LatLng(item.position[0], item.position[1]), {
+                        icon: L.mapbox.marker.icon({'marker-symbol': 'post', 'marker-color': '0044FF'}),
+                        title: item.name
+                    });
+
+                    marker.addTo(map);
+                }, 1000);
+            });
+        });
+    }
+    
     L.mapbox.accessToken = 'pk.eyJ1Ijoic29jY2VyaGFvdGlhbiIsImEiOiJQMTlDUmlzIn0.A3HXA0m5oBt5oIy6JoDWsw';
+
     var map = L.mapbox.map('map', 'mapbox.streets');
     var geolocate = document.getElementById('geolocate');
-    var myLayer = L.mapbox.featureLayer().addTo(map);
+    var myLayer = L.mapbox.featureLayer().loadURL('config.json').addTo(map);
+//    myLayer.loadURL('config.json');
+    var position;
     
     if (!navigator.geolocation) {
         geolocate.innerHTML = 'Geolocation is not available';
@@ -58,11 +113,14 @@
         };
     }
 
+
     // Once we've got a position, zoom and center the map
     // on it, and add a single marker.
     map.on('locationfound', function(e) {
+        numStation = sliderStation.data('slider').getValue();
         map.fitBounds(e.bounds);
-
+    
+        position = e.latlng;
         myLayer.setGeoJSON({
             type: 'Feature',
             geometry: {
@@ -75,44 +133,37 @@
                 'marker-symbol': 'star'
             }
         });
+        
+//        $.get('config.json', function(geojson) {
+//            myLayer.setGeoJSON(geojson);
+//        });
 
         // And hide the geolocation button
-        geolocate.parentNode.removeChild(geolocate);
+        //geolocate.parentNode.removeChild(geolocate);
+        
+        getStations(position, numStation);
+//        myLayer.on('ready', function() {
+//            // featureLayer.getBounds() returns the corners of the furthest-out markers,
+//            // and map.fitBounds() makes sure that the map contains these.
+//            map.fitBounds(myLayer.getBounds());
+//        });
+//        myLayer.loadURL('config.json').addTo(map);
     });
+
+            
 
     // If the user chooses not to allow their location
     // to be shared, display an error message.
     map.on('locationerror', function() {
         geolocate.innerHTML = 'Position could not be found';
     });
-//    .setView([47.206940, -68.956950], 9);
-//    $.get("http://localhost:3000/api/station_list", function(data) {
-//        data.forEach(function(item) {
-//            console.log(item.position);
-//            L.marker(item.position, {
-//                icon: L.mapbox.marker.icon({
-//                'marker-size': 'large',
-//                'marker-symbol': 'bus',
-//                'marker-color': '#fa0'
-//                })
-//            }).addTo(map);
-//        });
-////        type: "GET",
-////        url: "http://172.16.67.129:3000/api/station_list",
-////        data: {
-////            format: 'json'
-////        },
-////        dataType: 'jsonp',
-////        success: function(data) {
-////            console.log(data[0]);
-////        }
-//    })
-//    .done(function(data) {
-////        console.log(data);
-////        L.marker(data
-//    });
+
+    // With JQuery
+    var sliderStation = $('#ex1').slider();
+
 </script>
 
 </body>
 </html>
+
 

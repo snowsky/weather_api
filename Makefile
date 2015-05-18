@@ -1,5 +1,4 @@
 run:
-	sudo apt-get install mongod
 	slc run . & echo $$! > api.pid
 	node app/app.js & echo $$! > web.pid
 

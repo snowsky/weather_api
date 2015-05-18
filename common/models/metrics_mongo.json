@@ -1,5 +1,5 @@
 {
-  "name": "hourly_data",
+  "name": "metrics_mongo",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
