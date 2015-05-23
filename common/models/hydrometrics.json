@@ -15,8 +15,7 @@
       "required": true
     },
     "discharge": {
-      "type": "number",
-      "required": true
+      "type": "number"
     },
     "date": {
       "type": "date",
@@ -24,6 +23,19 @@
     },
     "discharge_qa": {
       "type": "number"
+    },
+    "stationName": {
+      "type": "number",
+      "required": true
+    },
+    "province": {
+      "type": "string",
+      "required": true
+    },
+    "stationLoc": {
+      "type": [
+        "number"
+      ]
     },
     "level_qa": {
       "type": "number"
