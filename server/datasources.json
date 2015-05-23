@@ -13,6 +13,8 @@
     "port": 9200,
     "name": "hydrometrics",
     "connector": "elastic-search",
-    "log": "trace"
+    "log": "trace",
+    "index": "hydrometric-*",
+    "type": "hydrometric"
   }
 }
