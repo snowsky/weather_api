@@ -13,6 +13,7 @@
     "fast-csv": "^0.6.0",
     "loopback": "^2.14.0",
     "loopback-boot": "^2.6.5",
+    "loopback-connector-elastic-search": "0.0.2-a",
     "loopback-connector-mongodb": "~1.8.0",
     "loopback-datasource-juggler": "^2.19.0",
     "serve-favicon": "^2.0.1"

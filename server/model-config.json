@@ -30,8 +30,12 @@
     "dataSource": "weather",
     "public": true
   },
-  "metrics": {
+  "metrics_mongo": {
     "dataSource": "weather",
+    "public": true
+  },
+  "hydrometrics": {
+    "dataSource": "hydrometrics",
     "public": true
   }
 }

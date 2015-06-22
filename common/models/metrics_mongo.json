@@ -1,0 +1,30 @@
+{
+  "name": "metrics_mongo",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "stationid": {
+      "type": "string",
+      "required": true
+    },
+    "level": {
+      "type": "number",
+      "required": true
+    },
+    "qa_qc": {
+      "type": "number",
+      "required": true
+    },
+    "discharge": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

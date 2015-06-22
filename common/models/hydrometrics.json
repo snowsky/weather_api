@@ -1,12 +1,12 @@
 {
-  "name": "metrics",
+  "name": "hydrometrics",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "stationid": {
+    "stationID": {
       "type": "string",
       "required": true
     },
@@ -14,13 +14,31 @@
       "type": "number",
       "required": true
     },
-    "qa_qc": {
+    "discharge": {
+      "type": "number"
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "discharge_qa": {
+      "type": "number"
+    },
+    "stationName": {
       "type": "number",
       "required": true
     },
-    "discharge": {
-      "type": "number",
+    "province": {
+      "type": "string",
       "required": true
+    },
+    "stationLoc": {
+      "type": [
+        "number"
+      ]
+    },
+    "level_qa": {
+      "type": "number"
     }
   },
   "validations": [],
